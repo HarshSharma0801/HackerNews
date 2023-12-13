@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors:{
-        'back' : '#E3651D'
+        'back' : '#E3651D',
+        'sec': '#FB8B24'
       }
     },
   },

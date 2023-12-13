@@ -2,13 +2,17 @@ import Header from "../Header";
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Loader from "../Loader/Loader";
+
 const ParentItem = () => {
   const id = useParams();
+  const [load , setload] = useState(false)
 
   const [data, setdata] = useState();
   const [children, setchildren] = useState([]);
 
   const getItem = async () => {
+    setload(true)
     const link = "https://hn.algolia.com/api/v1/items/" + id.id;
     try {
       await axios.get(link).then((res) => {
@@ -16,6 +20,8 @@ const ParentItem = () => {
           console.log(res.data.children);
           setchildren(res.data.children);
           setdata(res.data);
+          setload(false)
+
         }
       });
     } catch (error) {
@@ -31,6 +37,7 @@ const ParentItem = () => {
 
   return (
     <>
+    {load && <Loader/>}
     <div className="h-screen overflow-x-hidden bg-black">
          <Header />
          <div className="px-2">

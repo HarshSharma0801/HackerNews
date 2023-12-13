@@ -1,14 +1,18 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <>
       <div className="flex justify-around md:justify-around items-center  w-[100%] text-white bg-back p-4 ">
         <div>
+          <Link to={'/'}>
           <h1
            
             className="text-xl md:text-3xl  cursor-pointer"
           >
             HackerNews
-          </h1>
+            </h1>
+          </Link>
         </div>
         <div className="flex gap-1 px-1 w-[50%] text-sm justify-center md:hidden">
         <div className="md:hidden flex  justify-center rounded-2xl bg-white ">

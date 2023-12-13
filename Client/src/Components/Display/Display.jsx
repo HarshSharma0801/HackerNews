@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-const Display = () => {
-  const [data, setdata] = useState([]);
+import Loader from "../Loader/Loader"; 
 
+const Display = () => {
+  const [load , setload] = useState(false)
+  const [data, setdata] = useState([]);
+  const [mainQuery , SetmainQuery] = useState('latest')
   const MakeYear = (date) => {
     const data = new Date(date);
     const currentDate = new Date();
@@ -15,11 +18,12 @@ const Display = () => {
   const [ActivePage, SetActivePage] = useState(0);
 
   const Getdata = async () => {
+    setload(true)
     try {
       await axios
         .get("http://hn.algolia.com/api/v1/search", {
           params: {
-            query: "sex",
+            query: mainQuery,
             page: ActivePage,
           },
         })
@@ -27,6 +31,7 @@ const Display = () => {
           console.log(res.data);
           SetPageCount(res.data.nbPages);
           setdata(res.data.hits);
+          setload(false)
         });
     } catch (error) {
       console.log(error);
@@ -40,8 +45,17 @@ const Display = () => {
     SetActivePage(parseInt(selected) + 1);
   };
 
+  const handleChange = (e)=>{
+    SetmainQuery(e.target.value)
+  }
+
+  const SearchFunc = ()=>{
+    Getdata() ;
+  }
+
   return (
     <>
+    {load && <Loader/>}
       <div className="flex justify-around md:justify-around items-center  w-[100%] text-white bg-back p-4 ">
         <div>
           <h1 className="text-xl md:text-3xl  cursor-pointer">HackerNews</h1>
@@ -71,20 +85,22 @@ const Display = () => {
             </div>
           </div>
         </div>
-        <div className="hidden md:flex  justify-center rounded-2xl bg-white ">
+        <div className="hidden md:flex p-2 justify-center rounded-2xl bg-white ">
           <input
+          onChange={handleChange}
             type="text"
             className="text-black text-xl rounded-2xl w-[65vw] outline-none  font-semibold p-3"
-            placeholder="search"
+            placeholder="Search Anything here ..."
           />
-          <div className="text-center flex justify-center items-center p-2">
+          <div onClick={SearchFunc} className="text-center flex justify-center rounded-full border cursor-pointer hover:bg-back hover:text-white text-back border-back items-center p-2">
             <svg
+              
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-7 h-7 text-back"
+              className="w-7 h-7 "
             >
               <path
                 strokeLinecap="round"

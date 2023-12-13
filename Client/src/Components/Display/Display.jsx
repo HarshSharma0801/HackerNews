@@ -18,7 +18,6 @@ const Display = () => {
   const [ActivePage, SetActivePage] = useState(0);
 
   const Getdata = async () => {
-    setload(true)
     try {
       await axios
         .get("http://hn.algolia.com/api/v1/search", {
@@ -31,7 +30,6 @@ const Display = () => {
           console.log(res.data);
           SetPageCount(res.data.nbPages);
           setdata(res.data.hits);
-          setload(false)
         });
     } catch (error) {
       console.log(error);
